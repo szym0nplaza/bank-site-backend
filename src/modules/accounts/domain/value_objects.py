@@ -1,16 +1,18 @@
 import re
 from typing import Union
+from dataclasses import dataclass
 
+from base.types import ValueObject
 from config.settings import Settings
 from cryptography.fernet import Fernet
-from dataclasses import dataclass
+
 
 EMAIL_REGEX = r"^\S+@\S+\.\S+"
 PASSWORD_REGEX = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}"
 
 
-@dataclass(frozen=True)
-class Email:
+@dataclass
+class Email(ValueObject):
     value: str
 
     def __post_init__(self) -> None:
@@ -22,7 +24,7 @@ class Email:
 
 
 @dataclass
-class Password:
+class Password(ValueObject):
     value: Union[str, bytes]
 
     def __post_init__(self) -> None:
@@ -32,3 +34,29 @@ class Password:
                 1 letter, 1 number and 1 special character!"
             )
         self.value = Fernet(Settings.password_key.encode()).encrypt(self.value.encode())
+
+
+@dataclass
+class Currency(ValueObject):
+    """
+    Default currency value object.
+    Value must be PLN, USD or EUR.
+    """
+
+    value: str
+
+    def __post_init__(self) -> None:
+        acceptable_currencies = ("PLN", "EUR", "USD")
+        if len(self.value) != 3 and self.value not in acceptable_currencies:
+            raise ValueError(
+                "Incorrect currency string! Choose one from: PLN, USD, EUR."
+            )
+
+
+@dataclass
+class AccountNumber(ValueObject):
+    value: str
+
+    def __post_init__(self):
+        if len(str(self.value)) != 12:
+            raise ValueError("Account number must contain 12 digits!")

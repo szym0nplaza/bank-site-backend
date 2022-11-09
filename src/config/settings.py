@@ -21,16 +21,16 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-class DBSession:
-    session = sessionmaker(bind=create_engine(Settings.db_string))
-    base = declarative_base()
+# class DBSession:
+#     session = sessionmaker(bind=create_engine(Settings.db_string))
+#     base = declarative_base()
 
-    @classmethod
-    def get_session(cls):
-        session = cls.session()
-        try:
-            return session
-        except:
-            session.rollback()
-        finally:
-            session.close()
+#     @classmethod
+#     def get_session(cls):
+#         session = cls.session()
+#         try:
+#             return session
+#         except:
+#             session.rollback()
+#         finally:
+#             session.close()
