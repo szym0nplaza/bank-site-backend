@@ -4,7 +4,7 @@ from typing import List
 
 
 class IAccountRepository(ABC):
-    def list(self) -> List[Account]:
+    def list(self, user_id: int) -> List[Account]:
         raise NotImplementedError
 
     def get(self, acc_id: int) -> Account:
@@ -32,3 +32,7 @@ class AccountCommand(ABC):
 class AccountQuery(ABC):
     def __init__(self, account_repository: IAccountRepository) -> None:
         self.account_repo = account_repository
+
+    @abstractmethod
+    def run_query(self) -> None:
+        raise NotImplementedError

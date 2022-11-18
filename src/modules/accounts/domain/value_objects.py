@@ -1,6 +1,7 @@
 import re
 from typing import Union
 from dataclasses import dataclass
+import enum
 
 from base.types import ValueObject
 from config.settings import Settings
@@ -9,6 +10,15 @@ from cryptography.fernet import Fernet
 
 EMAIL_REGEX = r"^\S+@\S+\.\S+"
 PASSWORD_REGEX = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}"
+
+
+class Currencies(enum.Enum):
+    pln = "PLN"
+    usd = "USD"
+    eur = "EUR"
+
+    def __str__(self):
+        return str(self.value)
 
 
 @dataclass
@@ -46,7 +56,7 @@ class Currency(ValueObject):
     value: str
 
     def __post_init__(self) -> None:
-        acceptable_currencies = ("PLN", "EUR", "USD")
+        acceptable_currencies = [item.value for item in list(Currencies)]
         if len(self.value) != 3 and self.value not in acceptable_currencies:
             raise ValueError(
                 "Incorrect currency string! Choose one from: PLN, USD, EUR."

@@ -11,26 +11,28 @@ class Settings(BaseSettings):
     db_password: str = Field(env="DB_PASSWORD")
 
     @property
-    @classmethod
-    def db_string(cls) -> str:
+    def db_string(self) -> str:
         return (
-            f"postgresql://{cls.db_user}:{cls.db_password}@localhost:5432/{cls.db_name}"
+            f"postgresql://{self.db_user}:{self.db_password}@localhost:5432/{self.db_name}"
         )
 
     class Config:
         env_file = ".env"
 
 
-# class DBSession:
-#     session = sessionmaker(bind=create_engine(Settings.db_string))
-#     base = declarative_base()
+settings = Settings()
 
-#     @classmethod
-#     def get_session(cls):
-#         session = cls.session()
-#         try:
-#             return session
-#         except:
-#             session.rollback()
-#         finally:
-#             session.close()
+
+class DBSession:
+    __session = sessionmaker(bind=create_engine(settings.db_string))
+    base = declarative_base()
+
+    @classmethod
+    def get_session(cls):
+        session = cls.__session()
+        try:
+            return session
+        except:
+            session.rollback()
+        finally:
+            session.close()

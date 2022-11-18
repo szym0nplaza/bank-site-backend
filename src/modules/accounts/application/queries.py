@@ -4,8 +4,8 @@ from modules.accounts.domain.models import Account
 
 
 class GetAccountsList(AccountQuery):
-    def run_query(self) -> List[Account]:
-        return self.account_repo.list()
+    def run_query(self, user_id: int) -> List[Account]:
+        return self.account_repo.list(user_id)
 
 
 class GetAccount(AccountQuery):
