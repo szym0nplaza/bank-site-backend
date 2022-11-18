@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import enum
 
 from base.types import ValueObject
-from config.settings import Settings
+from config.settings import settings
 from cryptography.fernet import Fernet
 
 
@@ -43,7 +43,7 @@ class Password(ValueObject):
                 "Password must contain at least 8 characters,\
                 1 letter, 1 number and 1 special character!"
             )
-        self.value = Fernet(Settings.password_key.encode()).encrypt(self.value.encode())
+        self.value = Fernet(settings.password_key.encode()).encrypt(self.value.encode())
 
 
 @dataclass

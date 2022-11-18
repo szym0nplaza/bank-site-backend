@@ -1,5 +1,4 @@
-from decimal import Decimal
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Union
 import random
 from dataclasses import dataclass
 
@@ -16,16 +15,20 @@ from modules.accounts.domain.value_objects import (
 
 @dataclass
 class User(Entity):
-    id: int
     login: str
-    email: Email
-    password: Password
+    email: Union[Email, str]
+    password: Union[Password, str]
+    id: Optional[int] = None
 
     def update_email(self, new_email: Email):
         self.email = new_email
 
     def change_password(self, new_password: Password):
         self.password = new_password
+
+    def __post_init__(self) -> None:
+        self.email = self.email.value
+        self.password = self.password.value
 
 
 @dataclass
@@ -45,6 +48,9 @@ class Account(Entity):
         acc_number = random.randint(10**11, 10**12)
         self.number = AccountNumber(acc_number)
         self.balance = round(0, 2)
+
+        self.currency= self.currency.value
+        self.number = self.number.value
 
 
 class Client:

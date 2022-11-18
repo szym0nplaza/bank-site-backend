@@ -1,38 +1,25 @@
 from abc import abstractmethod, ABC
-from modules.accounts.domain.models import Account
+from modules.accounts.domain.models import Account, User
 from typing import List
 
 
-class IAccountRepository(ABC):
-    def list(self, user_id: int) -> List[Account]:
+class IUserRepository(ABC):
+    @abstractmethod
+    def list(self) -> List[User]:
         raise NotImplementedError
-
-    def get(self, acc_id: int) -> Account:
-        raise NotImplementedError
-
-    def create(self, account: Account) -> None:
-        raise NotImplementedError
-
-    def update(self, account: Account) -> None:
-        raise NotImplementedError
-
-    def delete(self, account_id: int) -> None:
-        raise NotImplementedError
-
-
-class AccountCommand(ABC):
-    def __init__(self, account_repository: IAccountRepository) -> None:
-        self.account_repo = account_repository
 
     @abstractmethod
-    def execute(self) -> None:
+    def get(self, user_id: int) -> User:
         raise NotImplementedError
 
-
-class AccountQuery(ABC):
-    def __init__(self, account_repository: IAccountRepository) -> None:
-        self.account_repo = account_repository
+    @abstractmethod
+    def create(self, user: User) -> None:
+        raise NotImplementedError
 
     @abstractmethod
-    def run_query(self) -> None:
+    def update(self, user: User) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(self, user_id: int) -> None:
         raise NotImplementedError

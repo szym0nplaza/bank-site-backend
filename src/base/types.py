@@ -7,3 +7,7 @@ class ValueObject:
 
 class Entity:
     """Base class for Entities"""
+
+
+class Command:
+    """Base class for commands"""

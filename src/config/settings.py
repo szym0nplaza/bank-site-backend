@@ -24,12 +24,12 @@ settings = Settings()
 
 
 class DBSession:
-    __session = sessionmaker(bind=create_engine(settings.db_string))
+    _session = sessionmaker(bind=create_engine(settings.db_string))
     base = declarative_base()
 
     @classmethod
-    def get_session(cls):
-        session = cls.__session()
+    def get_session(cls) -> _session:
+        session = cls._session()
         try:
             return session
         except:

@@ -15,7 +15,8 @@ class User(DBSession.base):
 
 class Account(DBSession.base):
     __tablename__ = "accounts"
-
+    
+    id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     default_currency = Column(Enum(value_objects.Currencies))
     number = Column(Integer)

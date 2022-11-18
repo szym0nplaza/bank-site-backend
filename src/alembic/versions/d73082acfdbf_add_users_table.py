@@ -19,10 +19,10 @@ depends_on = None
 def upgrade() -> None:
     op.create_table(
         'users',
-        sa.Column('id', sa.Integer, primary_key=True, nullable=True),
+        sa.Column('id', sa.Integer, primary_key=True, nullable=True, autoincrement=True),
         sa.Column('login', sa.String(50), nullable=False),
-        sa.Column('email', sa.String(100), nullable=False),
-        sa.Column('password', sa.String(100), nullable=False),
+        sa.Column('email', sa.String(100), nullable=False, unique=True),
+        sa.Column('password', sa.String(300), nullable=False),
     )
 
     # ### end Alembic commands ###

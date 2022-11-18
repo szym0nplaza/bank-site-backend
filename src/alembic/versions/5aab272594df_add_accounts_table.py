@@ -19,7 +19,7 @@ depends_on = None
 def upgrade() -> None:
     op.create_table(
         'accounts',
-        sa.Column('id', sa.Integer, primary_key=True, nullable=False),
+        sa.Column('id', sa.Integer, primary_key=True, nullable=False, autoincrement=True),
         sa.Column('default_currency', sa.String(3), nullable=False),
         sa.Column('number', sa.String(12), nullable=False),
         sa.Column('balance', sa.Float(precision=2), nullable=False),

@@ -1,19 +1,10 @@
-from modules.accounts.application.interfaces import AccountCommand
-from modules.accounts.application.dto import AccountDTO
-from modules.accounts.domain.models import Account
+from base.types import Command
+from dataclasses import dataclass
 
 
-class CreateAccount(AccountCommand):
-    def execute(self, acc_info: AccountDTO) -> None:
-        account = Account(**(acc_info.__dict__))
-        self.account_repo.create(account)
+@dataclass
+class CreateUser(Command):
+    login: str
+    email: str
+    password: str
 
-
-class UpdateAccount(AccountCommand):
-    def execute(self, acc_info: AccountDTO) -> None:
-        self.account_repo.update(Account(**acc_info.__dict__))
-
-
-class DeleteAccount(AccountCommand):
-    def execute(self, acc_id: int) -> None:
-        self.account_repo.delete(acc_id)
