@@ -10,4 +10,8 @@ class Entity:
 
 
 class Command:
-    """Base class for commands"""
+    """Base class for Commands"""
+
+
+class Repository:
+    """Base class for Repos"""

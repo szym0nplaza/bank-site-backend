@@ -11,14 +11,3 @@ def add_user(command: CreateUser, repo: IUserRepository):
         password=Password(command.password),
     )
     repo.create(user)
-
-
-COMMAND_HANDLERS = {CreateUser: add_user}
-
-
-def handle_command(command, repo):
-    try:
-        handler = COMMAND_HANDLERS[type(command)]
-        handler(command, repo)
-    except Exception as e:
-        raise RuntimeError(e)
