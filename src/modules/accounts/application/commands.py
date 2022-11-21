@@ -8,3 +8,10 @@ class CreateUser(Command):
     email: str
     password: str
 
+
+@dataclass
+class UpdateUser(Command):
+    id: int
+    login: str
+    email: str
+

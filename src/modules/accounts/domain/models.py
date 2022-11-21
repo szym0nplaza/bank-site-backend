@@ -3,7 +3,7 @@ import random
 from dataclasses import dataclass
 
 from base.types import Entity
-from config.settings import Settings
+from config.settings import settings
 from cryptography.fernet import Fernet
 from modules.accounts.domain.value_objects import (
     Email,
@@ -17,7 +17,7 @@ from modules.accounts.domain.value_objects import (
 class User(Entity):
     login: str
     email: Union[Email, str]
-    password: Union[Password, str]
+    password: Optional[Union[Password, str]] = None
     id: Optional[int] = None
 
     def update_email(self, new_email: Email):
@@ -28,7 +28,8 @@ class User(Entity):
 
     def __post_init__(self) -> None:
         self.email = self.email.value
-        self.password = self.password.value
+        if self.password:
+            self.password = self.password.value
 
 
 @dataclass
@@ -64,5 +65,5 @@ class Client:
     def check_password(self, db_password: bytes, given_password: str) -> bool:
         return (
             given_password
-            == Fernet(Settings.password_key.encode()).decrypt(db_password).decode()
+            == Fernet(settings.password_key.encode()).decrypt(db_password).decode()
         )
