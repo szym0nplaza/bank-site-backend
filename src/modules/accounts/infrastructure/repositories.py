@@ -5,13 +5,18 @@ from sqlalchemy.exc import IntegrityError
 
 
 class UserRepository(IUserRepository):
-    def __init__(self, session=DBSession.get_session()) -> None:
-        self._session = session
+    def __init__(self, session_class=DBSession) -> None:
+        self._session_class = session_class
+
+    def __enter__(self) -> None:
+        self._session = self._session_class.get_session()
+
+    def __exit__(self, *__args):
+        self._session.commit()
 
     def create(self, user: User) -> None:
         try:
             self._session.add(user)
-            self._session.commit()
         except IntegrityError:
             raise ValueError("User with given email already exists!")
 
@@ -22,4 +27,11 @@ class UserRepository(IUserRepository):
             if key not in ["_sa_instance_state", "password"]
         }
         self._session.query(User).filter_by(id=user.id).update(user_data)
-        self._session.commit()
+
+    def change_password(self, dto: User):
+        user: User = self._session.query(User).filter_by(id=dto.id).first()
+        if user.check_password(user.password, dto.password):
+            user.password = dto.password
+
+    def delete(self, user_id: int) -> None:
+        self._session.query(User).filter_by(id=user_id).delete()

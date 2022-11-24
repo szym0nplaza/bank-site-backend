@@ -1,7 +1,7 @@
 from typing import List, Tuple, Optional, Union
 import random
 from dataclasses import dataclass
-
+from datetime import date
 from base.types import Entity
 from config.settings import settings
 from cryptography.fernet import Fernet
@@ -17,6 +17,9 @@ from modules.accounts.domain.value_objects import (
 class User(Entity):
     login: str
     email: Union[Email, str]
+    name: Optional[str] = None
+    surname: Optional[str] = None
+    date_of_birth: Optional[date] = None
     password: Optional[Union[Password, str]] = None
     id: Optional[int] = None
 
@@ -25,6 +28,12 @@ class User(Entity):
 
     def change_password(self, new_password: Password):
         self.password = new_password
+    
+    def check_password(self, db_password: str, given_password: str) -> bool:
+        return (
+            Fernet(settings.password_key.encode()).decrypt(given_password).decode()
+            == Fernet(settings.password_key.encode()).decrypt(db_password.encode()).decode()
+        )
 
     def __post_init__(self) -> None:
         self.email = self.email.value
@@ -61,9 +70,3 @@ class Client:
 
     def get_client_info(self) -> Tuple:
         return self.data, self.accounts
-
-    def check_password(self, db_password: bytes, given_password: str) -> bool:
-        return (
-            given_password
-            == Fernet(settings.password_key.encode()).decrypt(db_password).decode()
-        )

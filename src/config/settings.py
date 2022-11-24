@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 class Settings(BaseSettings):
+    debug: bool = bool(Field(env="DEBUG"))
     password_key: str = Field(env="PASSWORD_ENCRYPTION_KEY")
     db_name: str = Field(env="DB_NAME")
     db_user: str = Field(env="DB_USER")
