@@ -10,12 +10,15 @@ from fastapi.responses import JSONResponse
 from base.types import Command, Repository
 
 
-COMMAND_HANDLERS = {
+USER_COMMAND_HANDLERS = {
     CreateUser: {"handler": add_user, "response_code": 201},
     UpdateUser: {"handler": update_account, "response_code": 200},
     ChangePassword: {"handler": change_password, "response_code": 200},
     DeleteUser: {"handler": delete_user, "response_code": 200},
 }
+
+
+COMMAND_HANDLERS = {**USER_COMMAND_HANDLERS} # Will join all handlers in one
 
 
 def handle_command(command: Command, repo: Repository) -> JSONResponse:

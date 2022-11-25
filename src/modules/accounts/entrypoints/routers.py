@@ -5,7 +5,11 @@ from modules.accounts.application.commands import (
     ChangePassword,
     DeleteUser,
 )
-from base.handlers import handle_command
+from modules.accounts.application.queries import GetUserList, GetUser
+from modules.accounts.application.dto import UserDTO
+from base.command_handler import handle_command
+from base.query_handler import handle_query
+from typing import List
 from modules.accounts.infrastructure.repositories import UserRepository
 
 
@@ -34,4 +38,17 @@ async def change_password(dto: ChangePassword):
 async def delete_user(user_id: int):
     dto = DeleteUser(id=user_id)
     response = handle_command(dto, UserRepository())
+    return response
+
+
+@router.get("/users", response_model=List[UserDTO])
+async def get_user_list(dto: GetUserList):
+    response = handle_query(dto, UserRepository())
+    return response
+
+
+@router.get("/users/{user_id}", response_model=UserDTO)
+async def get_user(user_id:int):
+    dto = GetUser(id=user_id)
+    response = handle_query(dto, UserRepository())
     return response

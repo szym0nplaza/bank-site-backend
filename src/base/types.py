@@ -15,3 +15,7 @@ class Command:
 
 class Repository:
     """Base class for Repos"""
+
+
+class Query:
+    """Base class for Queries"""

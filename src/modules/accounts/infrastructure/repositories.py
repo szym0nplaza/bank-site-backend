@@ -2,6 +2,7 @@ from modules.accounts.application.interfaces import IUserRepository
 from modules.accounts.domain.models import User
 from config.settings import DBSession
 from sqlalchemy.exc import IntegrityError
+from typing import List
 
 
 class UserRepository(IUserRepository):
@@ -13,6 +14,14 @@ class UserRepository(IUserRepository):
 
     def __exit__(self, *__args):
         self._session.commit()
+    
+    def list(self) -> List[User]:
+        users = self._session.query(User).all()
+        return users
+
+    def get(self, user_id: int) -> User:
+        user = self._session.query(User).filter_by(id=user_id).first()
+        return user
 
     def create(self, user: User) -> None:
         try:
