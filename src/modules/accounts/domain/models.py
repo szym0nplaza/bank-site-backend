@@ -29,10 +29,10 @@ class User(Entity):
     def change_password(self, new_password: Password):
         self.password = new_password
     
-    def check_password(self, db_password: str, given_password: str) -> bool:
+    def check_password(self, given_password: str) -> bool:
         return (
             Fernet(settings.password_key.encode()).decrypt(given_password).decode()
-            == Fernet(settings.password_key.encode()).decrypt(db_password.encode()).decode()
+            == Fernet(settings.password_key.encode()).decrypt(self.password.encode()).decode()
         )
 
     def __post_init__(self) -> None:

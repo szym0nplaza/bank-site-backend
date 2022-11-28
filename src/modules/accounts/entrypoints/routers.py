@@ -42,8 +42,8 @@ async def delete_user(user_id: int):
 
 
 @router.get("/users", response_model=List[UserDTO])
-async def get_user_list(dto: GetUserList):
-    response = handle_query(dto, UserRepository())
+async def get_user_list():
+    response = handle_query(GetUserList(), UserRepository())
     return response
 
 

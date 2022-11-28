@@ -26,7 +26,8 @@ class UpdateUser(Command):
 @dataclass
 class ChangePassword(Command):
     id: int
-    password: str
+    new_password: str
+    repeated_password: str
     login: str
     email: str
 

@@ -39,8 +39,9 @@ class UserRepository(IUserRepository):
 
     def change_password(self, dto: User):
         user: User = self._session.query(User).filter_by(id=dto.id).first()
-        if user.check_password(user.password, dto.password):
-            user.password = dto.password
+        if user.check_password(dto.password):
+            raise ValueError("Passwords are the same!")
+        user.password = dto.password
 
     def delete(self, user_id: int) -> None:
         self._session.query(User).filter_by(id=user_id).delete()
