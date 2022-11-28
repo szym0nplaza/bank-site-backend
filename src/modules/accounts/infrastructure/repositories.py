@@ -20,8 +20,8 @@ class UserRepository(IUserRepository):
         return users
 
     def get(self, user_id: int) -> User:
-        user = self._session.query(User).filter_by(id=user_id).first()
-        return user
+        db_user = self._session.query(User).filter_by(id=user_id).first()
+        return db_user
 
     def create(self, user: User) -> None:
         try:
@@ -30,18 +30,14 @@ class UserRepository(IUserRepository):
             raise ValueError("User with given email already exists!")
 
     def update(self, user: User) -> None:
-        user_data = {
-            key: value
-            for key, value in user.__dict__.items()
-            if key not in ["_sa_instance_state", "password"]
-        }
-        self._session.query(User).filter_by(id=user.id).update(user_data)
+        db_user = self._session.query(User).filter_by(id=user.id).first()
+        db_user.update_data(user)
 
-    def change_password(self, dto: User):
-        user: User = self._session.query(User).filter_by(id=dto.id).first()
-        if user.check_password(dto.password):
+    def change_password(self, user: User):
+        db_user: User = self._session.query(User).filter_by(id=user.id).first()
+        if db_user.check_password(user.password):
             raise ValueError("Passwords are the same!")
-        user.password = dto.password
+        db_user.change_password(user.password)
 
     def delete(self, user_id: int) -> None:
         self._session.query(User).filter_by(id=user_id).delete()

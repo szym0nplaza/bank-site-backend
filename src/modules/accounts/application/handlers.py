@@ -39,8 +39,11 @@ def change_password(dto: commands.ChangePassword, repo: IUserRepository) -> None
         email=Email(dto.email),
         password=Password(dto.new_password),
     )
-    if not user.check_password(Password(dto.repeated_password).value):
+
+    repeated_password = Password(dto.repeated_password).value
+    if not user.check_password(repeated_password):
         raise AssertionError("Passwords don't match!")
+
     with repo:
         repo.change_password(user)
 

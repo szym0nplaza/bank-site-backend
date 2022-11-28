@@ -23,16 +23,23 @@ class User(Entity):
     password: Optional[Union[Password, str]] = None
     id: Optional[int] = None
 
-    def update_email(self, new_email: Email):
-        self.email = new_email
+    def update_data(self, dto):
+        for field in self.__dict__.keys():
+            if field in ["_sa_instance_state", "password"]:
+                continue
+
+            new_value = getattr(dto, field)
+            setattr(self, field, new_value)
 
     def change_password(self, new_password: Password):
         self.password = new_password
-    
+
     def check_password(self, given_password: str) -> bool:
         return (
             Fernet(settings.password_key.encode()).decrypt(given_password).decode()
-            == Fernet(settings.password_key.encode()).decrypt(self.password.encode()).decode()
+            == Fernet(settings.password_key.encode())
+            .decrypt(self.password.encode())
+            .decode()
         )
 
     def __post_init__(self) -> None:
@@ -59,7 +66,7 @@ class Account(Entity):
         self.number = AccountNumber(acc_number)
         self.balance = round(0, 2)
 
-        self.currency= self.currency.value
+        self.currency = self.currency.value
         self.number = self.number.value
 
 
