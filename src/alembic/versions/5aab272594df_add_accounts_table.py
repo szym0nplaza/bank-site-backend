@@ -24,7 +24,7 @@ def upgrade() -> None:
         sa.Column('number', sa.String(12), nullable=False),
         sa.Column('balance', sa.Float(precision=2), nullable=False),
         sa.Column('user_id', sa.Integer, nullable=False),
-        sa.ForeignKeyConstraint(['user_id'], ['users.id']),
+        sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete="CASCADE"),
     )
 
     # ### end Alembic commands ###

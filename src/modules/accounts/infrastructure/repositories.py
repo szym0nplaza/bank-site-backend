@@ -1,11 +1,10 @@
-from modules.accounts.application.interfaces import IUserRepository
-from modules.accounts.domain.models import User
+from modules.accounts.application.interfaces import IClientRepository
+from modules.accounts.domain.models import User, Account, Client
 from config.settings import DBSession
-from sqlalchemy.exc import IntegrityError
 from typing import List
 
 
-class UserRepository(IUserRepository):
+class ClientRepository(IClientRepository):
     def __init__(self, session_class=DBSession) -> None:
         self._session_class = session_class
 
@@ -13,31 +12,26 @@ class UserRepository(IUserRepository):
         self._session = self._session_class.get_session()
 
     def __exit__(self, *__args):
-        self._session.commit()
+        try:
+            self._session.commit()
+        except:
+            self._session.rollback()
+        finally:
+            self._session.rollback()
     
-    def list(self) -> List[User]:
+    def list(self) -> List[Client]:
         users = self._session.query(User).all()
         return users
 
     def get(self, user_id: int) -> User:
-        db_user = self._session.query(User).filter_by(id=user_id).first()
+        db_user: User = self._session.query(User).filter_by(id=user_id).first()
         return db_user
 
-    def create(self, user: User) -> None:
-        try:
-            self._session.add(user)
-        except IntegrityError:
-            raise ValueError("User with given email already exists!")
-
-    def update(self, user: User) -> None:
-        db_user = self._session.query(User).filter_by(id=user.id).first()
-        db_user.update_data(user)
-
-    def change_password(self, user: User):
-        db_user: User = self._session.query(User).filter_by(id=user.id).first()
-        if db_user.check_password(user.password):
-            raise ValueError("Passwords are the same!")
-        db_user.change_password(user.password)
+    def create_user(self, client: Client) -> None:
+        self._session.add(client.user)
+        db_user: User = self._session.query(User).filter_by(email=client.user.email).first()
+        client.accounts[0].user_id = db_user.id
+        self._session.add(client.accounts[0])
 
     def delete(self, user_id: int) -> None:
         self._session.query(User).filter_by(id=user_id).delete()

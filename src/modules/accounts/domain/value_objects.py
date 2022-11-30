@@ -13,9 +13,9 @@ PASSWORD_REGEX = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}
 
 
 class Currencies(enum.Enum):
-    pln = "PLN"
-    usd = "USD"
-    eur = "EUR"
+    PLN = "PLN"
+    USD = "USD"
+    EUR = "EUR"
 
     def __str__(self):
         return str(self.value)

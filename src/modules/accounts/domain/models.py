@@ -1,4 +1,5 @@
 from typing import List, Tuple, Optional, Union
+from decimal import Decimal
 import random
 from dataclasses import dataclass
 from datetime import date
@@ -32,7 +33,7 @@ class User(Entity):
             setattr(self, field, new_value)
 
     def change_password(self, new_password: Password):
-        self.password = new_password
+        self.password = new_password.value
 
     def check_password(self, given_password: str) -> bool:
         return (
@@ -50,30 +51,28 @@ class User(Entity):
 
 @dataclass
 class Account(Entity):
-    user_id: int
     default_currency: Currency
+    user_id: Optional[int] = None
+    id: Optional[int] = None
     number: Optional[AccountNumber] = None
-    balance: Optional[float] = None
+    balance: Optional[Decimal] = None
 
-    def update_balance(self, new_balance: float) -> None:
+    def update_balance(self, new_balance: Decimal) -> None:
         self.balance = new_balance
-
-    def change_currency(self, new_currency: Currency) -> None:
-        self.default_currency = new_currency
 
     def __post_init__(self):
         acc_number = random.randint(10**11, 10**12)
         self.number = AccountNumber(acc_number)
-        self.balance = round(0, 2)
+        self.balance = Decimal('0.00')
 
-        self.currency = self.currency.value
+        self.default_currency = self.default_currency.value
         self.number = self.number.value
 
 
 class Client:
-    def __init__(self, data: User, accounts: List[Account]) -> None:
-        self.data = data
+    def __init__(self, user: User, accounts: List[Account]) -> None:
+        self.user = user
         self.accounts = accounts
 
     def get_client_info(self) -> Tuple:
-        return self.data, self.accounts
+        return self.user, self.accounts
