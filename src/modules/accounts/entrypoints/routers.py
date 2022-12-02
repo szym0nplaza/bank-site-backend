@@ -6,7 +6,7 @@ from modules.accounts.application.commands import (
     DeleteUser,
 )
 from modules.accounts.application.queries import GetUserList, GetUser
-from modules.accounts.application.dto import UserDTO
+from modules.accounts.application.dto import UserDTO, ClientDTO
 from base.command_handler import handle_command
 from base.query_handler import handle_query
 from typing import List
@@ -47,7 +47,7 @@ async def get_user_list():
     return response
 
 
-@router.get("/users/{user_id}", response_model=UserDTO)
+@router.get("/users/{user_id}", response_model=ClientDTO)
 async def get_user(user_id:int):
     dto = GetUser(id=user_id)
     response = handle_query(dto, ClientRepository())

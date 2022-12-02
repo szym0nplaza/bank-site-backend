@@ -21,10 +21,10 @@ class IClientRepository(ABC, Repository):
     def __exit__(self, *__args):
         pass
 
-    def list(self):
-        pass
+    def list(self) -> List[Client]:
+        raise NotImplementedError
 
-    def get(self, user_id: int) -> User:
+    def get(self, user_id: int) -> Client:
         raise NotImplementedError
 
     def create_user(self, client: Client) -> None:

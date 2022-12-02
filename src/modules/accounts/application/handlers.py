@@ -2,8 +2,7 @@ from modules.accounts.application.interfaces import IClientRepository
 from modules.accounts.domain.models import User, Account, Client
 from modules.accounts.domain.value_objects import Email, Password, Currency
 from modules.accounts.application import commands, queries
-from modules.accounts.application.dto import UserDTO
-from psycopg2.errors import UniqueViolation
+from modules.accounts.application.dto import UserDTO, ClientDTO, AccountDTO
 from typing import List
 
 
@@ -25,7 +24,7 @@ def add_user(dto: commands.CreateUser, repo: IClientRepository) -> None:
 
 def update_user(dto: commands.UpdateUser, repo: IClientRepository) -> None:
     with repo:
-        user: User = repo.get(dto.id)
+        user: User = repo.get(dto.id).user
         user.update_data(dto)
 
 
@@ -34,7 +33,7 @@ def change_password(dto: commands.ChangePassword, repo: IClientRepository) -> No
         raise AssertionError("Passwords don't match!")
 
     with repo:
-        user: User = repo.get(dto.id)
+        user: User = repo.get(dto.id).user
         if user.check_password(Password(dto.new_password).value):
             raise ValueError("Passwords are the same!")
         user.change_password(Password(dto.new_password))
@@ -53,9 +52,12 @@ def get_user_list(_dto: queries.GetUserList, repo: IClientRepository) -> List[Us
     return response_data
 
 
-def get_user(dto: queries.GetUser, repo: IClientRepository) -> UserDTO:
+def get_user(dto: queries.GetUser, repo: IClientRepository) -> ClientDTO:
     with repo:
-        db_data = repo.get(dto.id).__dict__
-        response_data = UserDTO(**db_data)
+        client = repo.get(dto.id)
+        user, accounts = client.get_client_info()
+        user = UserDTO(**user.__dict__)
+        accounts = [AccountDTO(**acc.__dict__) for acc in accounts]
+        response_data = ClientDTO(user=user, accounts=accounts)
 
     return response_data

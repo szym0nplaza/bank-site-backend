@@ -23,9 +23,11 @@ class ClientRepository(IClientRepository):
         users = self._session.query(User).all()
         return users
 
-    def get(self, user_id: int) -> User:
+    def get(self, user_id: int) -> Client:
         db_user: User = self._session.query(User).filter_by(id=user_id).first()
-        return db_user
+        accounts: List[Account] = self._session.query(Account).filter_by(user_id=user_id)
+        client: Client = Client(db_user, accounts)
+        return client
 
     def create_user(self, client: Client) -> None:
         self._session.add(client.user)
