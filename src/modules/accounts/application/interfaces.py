@@ -22,7 +22,7 @@ class IClientRepository(ABC, Repository):
         pass
 
     @abstractmethod
-    def list(self) -> List[Client]:
+    def list(self) -> List[User]:
         raise NotImplementedError
 
     @abstractmethod

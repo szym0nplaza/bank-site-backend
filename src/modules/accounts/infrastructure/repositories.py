@@ -19,7 +19,7 @@ class ClientRepository(IClientRepository):
         finally:
             self._session.rollback()
     
-    def list(self) -> List[Client]:
+    def list(self) -> List[User]:
         users = self._session.query(User).all()
         return users
 
