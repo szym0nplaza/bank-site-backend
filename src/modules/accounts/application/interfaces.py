@@ -21,18 +21,20 @@ class IClientRepository(ABC, Repository):
     def __exit__(self, *__args):
         pass
 
+    @abstractmethod
     def list(self) -> List[Client]:
         raise NotImplementedError
 
+    @abstractmethod
     def get(self, user_id: int) -> Client:
+        """Gets user with assigned accounts"""
         raise NotImplementedError
 
+    @abstractmethod
     def create_user(self, client: Client) -> None:
         """Creates basic user with 1 main account"""
         raise NotImplementedError
 
-    def update_user(self, user: User) -> None:
-        raise NotImplementedError
-
+    @abstractmethod
     def delete(self, user_id: int) -> None:
         raise NotImplementedError

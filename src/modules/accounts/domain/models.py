@@ -3,7 +3,7 @@ from decimal import Decimal
 import random
 from dataclasses import dataclass
 from datetime import date
-from base.types import Entity
+from base.types import Entity, AggregateRoot
 from config.settings import settings
 from cryptography.fernet import Fernet
 from modules.accounts.domain.value_objects import (
@@ -69,7 +69,7 @@ class User(Entity):
             self.password = self.password.value
 
 
-class Client:
+class Client(AggregateRoot):
     def __init__(self, user: User, accounts: List[Account]) -> None:
         self.user = user
         self.accounts = accounts

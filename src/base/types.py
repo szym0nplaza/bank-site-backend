@@ -19,3 +19,6 @@ class Repository:
 
 class Query:
     """Base class for Queries"""
+
+class AggregateRoot:
+    """Base aggregate root class"""

@@ -6,8 +6,8 @@ from modules.accounts.application.handlers import (
     delete_user
 )
 from config.settings import settings
-from fastapi.responses import JSONResponse
 from base.types import Command, Repository
+from base.dto import ResponseDTO
 
 
 USER_COMMAND_HANDLERS = {
@@ -21,12 +21,12 @@ USER_COMMAND_HANDLERS = {
 COMMAND_HANDLERS = {**USER_COMMAND_HANDLERS} # Will join all handlers in one
 
 
-def handle_command(command: Command, repo: Repository) -> JSONResponse:
+def handle_command(command: Command, repo: Repository) -> ResponseDTO:
     try:
         handler = COMMAND_HANDLERS.get(type(command))
         handler["handler"](command, repo)
-        return JSONResponse({"message": "ok"}, status_code=handler.get("response_code"))
+        return ResponseDTO(message="ok", status=handler.get("response_code"))
     except Exception as e:
         if settings.debug:
             raise e
-        return JSONResponse(str(e), status_code=500)
+        return ResponseDTO(message=str(e), status=500)

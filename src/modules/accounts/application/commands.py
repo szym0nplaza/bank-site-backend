@@ -28,8 +28,6 @@ class ChangePassword(Command):
     id: int
     new_password: str
     repeated_password: str
-    login: str
-    email: str
 
 
 @dataclass

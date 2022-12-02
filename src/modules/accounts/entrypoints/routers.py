@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 from modules.accounts.application.commands import (
     CreateUser,
     UpdateUser,
@@ -19,26 +20,26 @@ accounts_router = router = APIRouter()
 @router.post("/create-user")
 async def create_user(dto: CreateUser):
     response = handle_command(dto, ClientRepository())
-    return response
+    return JSONResponse(response.message, status_code=response.status)
 
 
 @router.patch("/update-user")
 async def update_user(dto: UpdateUser):
     response = handle_command(dto, ClientRepository())
-    return response
+    return JSONResponse(response.message, status_code=response.status)
 
 
 @router.patch("/change-password")
 async def change_password(dto: ChangePassword):
     response = handle_command(dto, ClientRepository())
-    return response
+    return JSONResponse(response.message, status_code=response.status)
 
 
 @router.delete("/delete-user/{user_id}")
 async def delete_user(user_id: int):
     dto = DeleteUser(id=user_id)
     response = handle_command(dto, ClientRepository())
-    return response
+    return JSONResponse(response.message, status_code=response.status)
 
 
 @router.get("/users", response_model=List[UserDTO])
