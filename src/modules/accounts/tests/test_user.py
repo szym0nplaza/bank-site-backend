@@ -1,15 +1,14 @@
-import pytest
 from base.command_handler import handle_command
 from base.query_handler import handle_query
-from .conftest import MockUserRepository
+from .conftest import MockClientRepository
 from modules.accounts.application.dto import ClientDTO, UserDTO
-from modules.accounts.application.commands import CreateUser
+from modules.accounts.application.commands import CreateUser, UpdateUser, DeleteUser
 from modules.accounts.application.queries import GetUser, GetUserList
 from datetime import date
 
 
-class TestUserOperations:
-    repo = MockUserRepository()
+class TestClientOperations:
+    repo = MockClientRepository()
 
     def test_add(self):
         handle_command(
@@ -53,3 +52,31 @@ class TestUserOperations:
         assert len(result) == 2
         assert isinstance(result[0], UserDTO)
         assert isinstance(result[1], UserDTO)
+
+    def test_update(self):
+        handle_command(
+            UpdateUser(
+                id=1,
+                name="Changed Name",
+                surname="Changed Surname",
+                date_of_birth="1997-11-15",
+                login="MockUpdate123",
+                email="test.change@mail.com",
+            ), 
+            self.repo
+        )
+        result = handle_query(GetUser(id=1), self.repo)
+        assert result.user.email == "test.change@mail.com"
+        assert result.user.name == "Changed Name"
+        assert result.user.surname == "Changed Surname"
+        assert result.user.date_of_birth == date(1997, 11, 15)
+        assert result.user.login == "MockUpdate123"
+
+    def test_delete(self):
+        handle_command(DeleteUser(id=2), self.repo)
+        try:
+            handle_query(GetUser(id=2), self.repo)
+            assert False
+        except AttributeError:
+            assert True
+

@@ -10,7 +10,7 @@ def id_generator():
         id += 1
 
 
-class MockUserRepository(IClientRepository):
+class MockClientRepository(IClientRepository):
     users = dict()
     id = id_generator()
 
@@ -38,4 +38,5 @@ class MockUserRepository(IClientRepository):
         self.users[id] = {"user": client.user, "accounts": client.accounts}
 
     def delete(self, user_id: int) -> None:
-        return super().delete(user_id)
+        if self.users.get(user_id):
+            del self.users[user_id]
