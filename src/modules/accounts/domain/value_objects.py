@@ -61,6 +61,7 @@ class Currency(ValueObject):
             raise ValueError(
                 "Incorrect currency string! Choose one from: PLN, USD, EUR."
             )
+        self.value = self.value.upper()
 
 
 @dataclass

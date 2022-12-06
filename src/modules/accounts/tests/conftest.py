@@ -11,8 +11,10 @@ def id_generator():
 
 
 class MockClientRepository(IClientRepository):
-    users = dict()
-    id = id_generator()
+    _users = dict()
+    _accounts = dict()
+    user_id_generator = id_generator()
+    acc_id_generator = id_generator()
 
     def __enter__(self) -> None:
         pass
@@ -20,23 +22,38 @@ class MockClientRepository(IClientRepository):
     def __exit__(self, *__args):
         pass
 
-    def get(self, user_id: int) -> Client:
-        data = self.users.get(user_id)
-        client: Client = Client(user = data.get("user"), accounts=data.get("accounts"))
+    def get_user(self, user_id: int) -> Client:
+        data = self._users.get(user_id)
+        client: Client = Client(user=data.get("user"), accounts=data.get("accounts"))
         return client
 
-    def list(self) -> List[User]:
+    def get_user_list(self) -> List[User]:
         result = list()
-        for record in self.users.values():
+        for record in self._users.values():
             result.append(record.get("user"))
         return result
 
+    def create_account(self, account: Account) -> None:
+        id = next(self.acc_id_generator)
+        self._accounts[id] = account
+
+    def get_account_list(self, user_id: int) -> List[Account]:
+        result: List[Account] = [
+            record for record in self._accounts if record.user_id == user_id
+        ]
+        return result
+
+    def delete_account(self, acc_id: int) -> None:
+        if self._accounts.get(acc_id):
+            del self._users[acc_id]
+
     def create_user(self, client: Client) -> None:
-        id = next(self.id)
+        id = next(self.user_id_generator)
         client.user.id = id
         client.accounts[0].user_id = id
-        self.users[id] = {"user": client.user, "accounts": client.accounts}
+        self._accounts
+        self._users[id] = {"user": client.user, "accounts": client.accounts}
 
-    def delete(self, user_id: int) -> None:
-        if self.users.get(user_id):
-            del self.users[user_id]
+    def delete_user(self, user_id: int) -> None:
+        if self._users.get(user_id):
+            del self._users[user_id]

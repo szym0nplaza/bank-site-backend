@@ -5,6 +5,7 @@ from modules.accounts.application.commands import (
     UpdateUser,
     ChangePassword,
     DeleteUser,
+    CreateAccount
 )
 from modules.accounts.application.queries import GetUserList, GetUser
 from modules.accounts.application.dto import UserDTO, ClientDTO
@@ -19,6 +20,11 @@ accounts_router = router = APIRouter()
 
 @router.post("/create-user")
 async def create_user(dto: CreateUser):
+    response = handle_command(dto, ClientRepository())
+    return JSONResponse(response.message, status_code=response.status)
+
+@router.post("/create-account")
+async def create_account(dto: CreateAccount):
     response = handle_command(dto, ClientRepository())
     return JSONResponse(response.message, status_code=response.status)
 

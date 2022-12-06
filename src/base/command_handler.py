@@ -1,9 +1,16 @@
-from modules.accounts.application.commands import UpdateUser, CreateUser, ChangePassword, DeleteUser
+from modules.accounts.application.commands import (
+    UpdateUser,
+    CreateUser,
+    ChangePassword,
+    DeleteUser,
+    CreateAccount,
+)
 from modules.accounts.application.handlers import (
     add_user,
     update_user,
     change_password,
-    delete_user
+    delete_user,
+    add_account
 )
 from config.settings import settings
 from base.types import Command, Repository
@@ -15,10 +22,11 @@ USER_COMMAND_HANDLERS = {
     UpdateUser: {"handler": update_user, "response_code": 200},
     ChangePassword: {"handler": change_password, "response_code": 200},
     DeleteUser: {"handler": delete_user, "response_code": 200},
+    CreateAccount: {"handler": add_account, "response_code": 201},
 }
 
 
-COMMAND_HANDLERS = {**USER_COMMAND_HANDLERS} # Will join all handlers in one
+COMMAND_HANDLERS = {**USER_COMMAND_HANDLERS}  # Will join all handlers in one
 
 
 def handle_command(command: Command, repo: Repository) -> ResponseDTO:

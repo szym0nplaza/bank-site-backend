@@ -22,9 +22,15 @@ def add_user(dto: commands.CreateUser, repo: IClientRepository) -> None:
         repo.create_user(client)
 
 
+def add_account(dto: commands.CreateAccount, repo: IClientRepository):
+    with repo:
+        account = Account(user_id=dto.user_id, default_currency=Currency(dto.default_currency))
+        repo.create_account(account)
+
+
 def update_user(dto: commands.UpdateUser, repo: IClientRepository) -> None:
     with repo:
-        user: User = repo.get(dto.id).user
+        user: User = repo.get_user(dto.id).user
         user.update_data(dto)
 
 
@@ -33,7 +39,7 @@ def change_password(dto: commands.ChangePassword, repo: IClientRepository) -> No
         raise AssertionError("Passwords don't match!")
 
     with repo:
-        user: User = repo.get(dto.id).user
+        user: User = repo.get_user(dto.id).user
         if user.check_password(Password(dto.new_password).value):
             raise ValueError("Passwords are the same!")
         user.change_password(Password(dto.new_password))
@@ -41,12 +47,12 @@ def change_password(dto: commands.ChangePassword, repo: IClientRepository) -> No
 
 def delete_user(dto: commands.DeleteUser, repo: IClientRepository) -> None:
     with repo:
-        repo.delete(dto.id)
+        repo.delete_user(dto.id)
 
 
 def get_user_list(_dto: queries.GetUserList, repo: IClientRepository) -> List[UserDTO]:
     with repo:
-        db_data = repo.list()
+        db_data = repo.get_user_list()
         response_data = [UserDTO(**record.__dict__) for record in db_data]
 
     return response_data
@@ -54,7 +60,7 @@ def get_user_list(_dto: queries.GetUserList, repo: IClientRepository) -> List[Us
 
 def get_user(dto: queries.GetUser, repo: IClientRepository) -> ClientDTO:
     with repo:
-        client = repo.get(dto.id)
+        client = repo.get_user(dto.id)
         user, accounts = client.get_client_info()
         user = UserDTO(**user.__dict__)
         accounts = [AccountDTO(**acc.__dict__) for acc in accounts]

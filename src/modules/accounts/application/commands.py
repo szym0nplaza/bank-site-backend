@@ -1,16 +1,21 @@
 from base.types import Command
 from dataclasses import dataclass
-from datetime import date
 
 
 @dataclass
 class CreateUser(Command):
     name: str
     surname: str
-    date_of_birth: date
+    date_of_birth: str
     login: str
     email: str
     password: str
+
+
+@dataclass
+class CreateAccount(Command):
+    default_currency: str
+    user_id: int
 
 
 @dataclass
@@ -18,7 +23,7 @@ class UpdateUser(Command):
     id: int
     name: str
     surname: str
-    date_of_birth: date
+    date_of_birth: str
     login: str
     email: str
 
