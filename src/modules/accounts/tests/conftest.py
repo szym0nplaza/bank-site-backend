@@ -1,6 +1,6 @@
 from modules.accounts.application.interfaces import IClientRepository
 from modules.accounts.domain.models import Client, Account, User
-from typing import List
+from typing import List, Union
 
 
 def id_generator():
@@ -43,15 +43,17 @@ class MockClientRepository(IClientRepository):
         ]
         return result
 
+    def get_account(self, account_id: int) -> Union[Account, None]:
+        return self._accounts.get(account_id)
+
     def delete_account(self, acc_id: int) -> None:
         if self._accounts.get(acc_id):
-            del self._users[acc_id]
+            del self._accounts[acc_id]
 
     def create_user(self, client: Client) -> None:
         id = next(self.user_id_generator)
         client.user.id = id
         client.accounts[0].user_id = id
-        self._accounts
         self._users[id] = {"user": client.user, "accounts": client.accounts}
 
     def delete_user(self, user_id: int) -> None:

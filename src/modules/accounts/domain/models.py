@@ -25,6 +25,9 @@ class Account(Entity):
     def update_balance(self, new_balance: Decimal) -> None:
         self.balance = new_balance
 
+    def change_currency(self, new_currency: Currency):
+        self.default_currency = new_currency.value
+
     def __post_init__(self):
         acc_number = random.randint(10**11, 10**12)
         self.number = AccountNumber(acc_number)

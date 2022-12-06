@@ -24,7 +24,9 @@ def add_user(dto: commands.CreateUser, repo: IClientRepository) -> None:
 
 def add_account(dto: commands.CreateAccount, repo: IClientRepository):
     with repo:
-        account = Account(user_id=dto.user_id, default_currency=Currency(dto.default_currency))
+        account = Account(
+            user_id=dto.user_id, default_currency=Currency(dto.default_currency)
+        )
         repo.create_account(account)
 
 
@@ -65,5 +67,24 @@ def get_user(dto: queries.GetUser, repo: IClientRepository) -> ClientDTO:
         user = UserDTO(**user.__dict__)
         accounts = [AccountDTO(**acc.__dict__) for acc in accounts]
         response_data = ClientDTO(user=user, accounts=accounts)
+
+    return response_data
+
+
+def change_currency(dto: commands.ChangeCurrency, repo: IClientRepository) -> None:
+    with repo:
+        account: Account = repo.get_account(dto.id)
+        account.change_currency(Currency(dto.currency))
+
+
+def delete_account(dto: commands.DeleteAccount, repo: IClientRepository) -> None:
+    with repo:
+        repo.delete_account(dto.id)
+
+
+def get_account(dto: queries.GetAccount, repo: IClientRepository) -> AccountDTO:
+    with repo:
+        account: Account = repo.get_account(dto.id)
+        response_data = AccountDTO(**account.__dict__)
 
     return response_data

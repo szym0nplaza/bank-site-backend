@@ -10,3 +10,8 @@ class GetUserList(Query):
 @dataclass
 class GetUser(Query):
     id: int
+
+
+@dataclass
+class GetAccount(Query):
+    id: int

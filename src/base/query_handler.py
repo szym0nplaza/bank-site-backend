@@ -1,5 +1,5 @@
-from modules.accounts.application.queries import GetUserList, GetUser
-from modules.accounts.application.handlers import get_user_list, get_user
+from modules.accounts.application.queries import GetUserList, GetUser, GetAccount
+from modules.accounts.application.handlers import get_user_list, get_user, get_account
 from base.types import Query, Repository
 from base.dto import ResponseDTO
 from config.settings import settings
@@ -8,6 +8,7 @@ from config.settings import settings
 USER_QUERY_HANDLERS = {
     GetUserList: {"handler": get_user_list},
     GetUser: {"handler": get_user},
+    GetAccount: {"handler": get_account}
 }
 
 

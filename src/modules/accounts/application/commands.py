@@ -19,6 +19,17 @@ class CreateAccount(Command):
 
 
 @dataclass
+class DeleteAccount(Command):
+    id: int
+
+
+@dataclass
+class ChangeCurrency(Command):
+    id: int
+    currency: str
+
+
+@dataclass
 class UpdateUser(Command):
     id: int
     name: str
