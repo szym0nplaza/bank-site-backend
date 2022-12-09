@@ -88,3 +88,11 @@ def get_account(dto: queries.GetAccount, repo: IClientRepository) -> AccountDTO:
         response_data = AccountDTO(**account.__dict__)
 
     return response_data
+
+
+def get_account_by_number(dto: queries.GetAccountByNumber, repo: IClientRepository) -> AccountDTO:
+    with repo:
+        account: Account = repo.get_account(dto.number)
+        response_data = AccountDTO(**account.__dict__)
+
+    return response_data

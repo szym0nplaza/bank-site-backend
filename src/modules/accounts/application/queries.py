@@ -15,3 +15,8 @@ class GetUser(Query):
 @dataclass
 class GetAccount(Query):
     id: int
+
+
+@dataclass
+class GetAccountByNumber(Query):
+    number: int

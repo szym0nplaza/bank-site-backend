@@ -46,6 +46,13 @@ class MockClientRepository(IClientRepository):
     def get_account(self, account_id: int) -> Union[Account, None]:
         return self._accounts.get(account_id)
 
+    def get_account_by_number(self, account_number: int) -> Union[Account, None]:
+        try:
+            acc = list(filter(lambda x: x['number'] == account_number,self._accounts))[0]
+        except IndexError:
+            acc = None
+        return acc
+
     def delete_account(self, acc_id: int) -> None:
         if self._accounts.get(acc_id):
             del self._accounts[acc_id]

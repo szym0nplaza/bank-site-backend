@@ -26,6 +26,9 @@ class ClientRepository(IClientRepository):
     def get_account(self, account_id: int) -> Account:
         return self._session.query(Account).filter_by(id=account_id).first()
 
+    def get_account_by_number(self, account_number: int) -> Account:
+        return self._session.query(Account).filter_by(number=account_number).first()
+
     def get_user(self, user_id: int) -> Client:
         db_user: User = self._session.query(User).filter_by(id=user_id).first()
         accounts: List[Account] = self._session.query(Account).filter_by(user_id=user_id)

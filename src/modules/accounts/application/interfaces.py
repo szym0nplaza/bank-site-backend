@@ -36,6 +36,11 @@ class IClientRepository(ABC, Repository):
         raise NotImplementedError
 
     @abstractmethod
+    def get_account_by_number(self, account_number: int) -> Account:
+        """Gets user with assigned accounts"""
+        raise NotImplementedError
+
+    @abstractmethod
     def create_account(self, account: Account) -> None:
         raise NotImplementedError
 
