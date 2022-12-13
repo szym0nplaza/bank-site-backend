@@ -1,8 +1,10 @@
+import pika
+from aio_pika import connect_robust
+from elasticsearch import Elasticsearch
 from pydantic import BaseSettings, Field
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from elasticsearch import Elasticsearch
+from sqlalchemy.orm import sessionmaker
 
 
 class Settings(BaseSettings):
@@ -13,6 +15,7 @@ class Settings(BaseSettings):
     db_password: str = Field(env="DB_PASSWORD")
     db_host: str = Field(env="DB_HOST")
     elasticsearch_host: str = Field(env="ELASTICSEARCH_HOST")
+    rabbitmq_host: str = Field(env="RABBITMQ_HOST")
 
     @property
     def db_string(self) -> str:
@@ -29,6 +32,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 
+# DB session and connection
 class DBSession:
     """Handles base db configuration and session access in repos"""
 
@@ -46,6 +50,7 @@ class DBSession:
             session.close()
 
 
+# Elasticsearch configuration
 class ESClient:
     """Class for initiating Elasticsearch client"""
 
@@ -53,7 +58,30 @@ class ESClient:
 
     def search(self, search_data: dict, index: str) -> list:
         result = self._es.search(index=index, body={"query": {"match": search_data}})
-        return result["hits"]["hits"] # Get nested ES search response
+        return result["hits"]["hits"]  # Get nested ES search response
 
     def index(self, body: dict, index: str):
         self._es.index(index=index, document=body)
+
+
+# RabbitMQ configuration
+class RabbitMQClient:
+    def __init__(self, queue_name: str):
+        self.queue_name = queue_name
+        self.connection = pika.BlockingConnection(
+            pika.ConnectionParameters(host=settings.rabbitmq_host)
+        )
+        self.channel = self.connection.channel()
+        self.queue = self.channel.queue_declare(queue=self.queue_name)
+        self.callback_queue = self.queue.method.queue
+
+    async def consume(self, loop, process_data=lambda x: print(x)):
+        """Setup message listener with the current running loop"""
+        connection = await connect_robust(
+            host=settings.rabbitmq_host, port=5672, loop=loop
+        )
+        channel = await connection.channel()
+        queue = await channel.declare_queue(self.queue_name)
+        await queue.consume(process_data, no_ack=False)
+        print("Established pika async listener") # change to log
+        return connection
