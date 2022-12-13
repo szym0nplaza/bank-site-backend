@@ -5,6 +5,7 @@ from pydantic import BaseSettings, Field
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from .logger import logger
 
 
 class Settings(BaseSettings):
@@ -83,5 +84,5 @@ class RabbitMQClient:
         channel = await connection.channel()
         queue = await channel.declare_queue(self.queue_name)
         await queue.consume(process_data, no_ack=False)
-        print("Established pika async listener") # change to log
+        logger.info("Established pika async listener")
         return connection
