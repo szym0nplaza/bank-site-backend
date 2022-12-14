@@ -45,7 +45,4 @@ class LogConfig(BaseModel):
         "BankAppLogger": {"handlers": ["console", "file"], "level": LOG_LEVEL},
     }
 
-
-log_config = LogConfig()
-dictConfig(log_config.__dict__)
 logger = logging.getLogger("BankAppLogger")
