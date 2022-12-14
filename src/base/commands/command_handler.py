@@ -4,6 +4,8 @@ from base.dto import ResponseDTO
 from .commands_base import COMMAND_HANDLERS
 
 
+# Base handler for commands from all modules
+# Ensure that command is registered in commands_base.py file
 def handle_command(command: Command, repo: Repository) -> ResponseDTO:
     try:
         handler = COMMAND_HANDLERS.get(type(command))

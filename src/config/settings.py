@@ -35,7 +35,10 @@ settings = Settings()
 
 # DB session and connection
 class DBSession:
-    """Handles base db configuration and session access in repos"""
+    """
+    Handles base db configuration and session access in repos \n
+    `get_session` method returns session for performing db operations
+    """
 
     _session = sessionmaker(bind=create_engine(settings.db_string))
     base = declarative_base()
@@ -53,7 +56,11 @@ class DBSession:
 
 # Elasticsearch configuration
 class ESClient:
-    """Class for initiating Elasticsearch client"""
+    """
+    Class for initiating Elasticsearch client \n
+    `search` - returns data from given index (available with detailed searching) \n
+    `index` - add data in dict form to given index
+    """
 
     _es = Elasticsearch(settings.elasticsearch_string)
 
@@ -67,6 +74,7 @@ class ESClient:
 
 # RabbitMQ configuration
 class RabbitMQClient:
+    """Class configured for communicating and handling rabbitmq queue"""
     def __init__(self, queue_name: str):
         self.queue_name = queue_name
         self.connection = pika.BlockingConnection(

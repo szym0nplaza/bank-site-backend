@@ -3,7 +3,11 @@ from config.settings import RabbitMQClient
 
 
 class EventBus:
-    """Event Bus is base class for processing events through app modules"""
+    """
+    Event Bus is base class for processing events through app modules \n
+    Use `run_event` method to call function from other module and then \n
+    use `get_response_value` to get results
+    """
 
     def __init__(self, rabbitmq_client=RabbitMQClient("bank-app")):
         self.rabbitmq_client = rabbitmq_client

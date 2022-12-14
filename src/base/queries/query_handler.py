@@ -4,6 +4,8 @@ from config.settings import settings
 from .queries_base import QUERY_HANDLERS
 
 
+# Base handler for queries from all modules
+# Ensure that query is registered in queries_base.py file
 def handle_query(query: Query, repo: Repository) -> ResponseDTO:
     try:
         handler = QUERY_HANDLERS.get(type(query))
