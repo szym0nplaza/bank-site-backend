@@ -9,8 +9,8 @@ from modules.accounts.application.commands import (
 )
 from modules.accounts.application.queries import GetUserList, GetUser
 from modules.accounts.application.dto import UserDTO, ClientDTO
-from base.command_handler import handle_command
-from base.query_handler import handle_query
+from base.commands.command_handler import handle_command
+from base.queries.query_handler import handle_query
 from typing import List
 from modules.accounts.infrastructure.repositories import ClientRepository
 

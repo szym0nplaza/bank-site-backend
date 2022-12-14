@@ -4,7 +4,7 @@ from logging.config import dictConfig
 
 
 class LogConfig(BaseModel):
-    """Logging configuration"""
+    """Logging configuration [console - always, file - only for errors]"""
 
     LOG_FORMAT: str = "%(levelprefix)s [%(asctime)s] | %(filename)s: %(message)s"
     FILE_LOG_FORMAT: str = "%(levelname)s: [%(asctime)s] %(name)s | %(message)s"

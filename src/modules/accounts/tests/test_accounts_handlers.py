@@ -1,6 +1,6 @@
-from base.command_handler import handle_command
-from base.query_handler import handle_query
-from .conftest import MockClientRepository
+from base.commands.command_handler import handle_command
+from base.queries.query_handler import handle_query
+from .helpers import MockClientRepository
 from modules.accounts.application.dto import ClientDTO, UserDTO
 from modules.accounts.application.commands import (
     CreateUser,
