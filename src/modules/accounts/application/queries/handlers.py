@@ -2,7 +2,7 @@ from modules.accounts.application.interfaces import IClientRepository
 from modules.accounts.application.queries import queries
 from modules.accounts.domain.models import Account
 from modules.accounts.application.dto import UserDTO, ClientDTO, AccountDTO
-from typing import List
+from typing import List, Tuple
 
 
 def get_account(dto: queries.GetAccount, repo: IClientRepository) -> AccountDTO:
@@ -13,7 +13,9 @@ def get_account(dto: queries.GetAccount, repo: IClientRepository) -> AccountDTO:
     return response_data
 
 
-def get_account_by_number(dto: queries.GetAccountByNumber, repo: IClientRepository) -> AccountDTO:
+def get_account_by_number(
+    dto: queries.GetAccountByNumber, repo: IClientRepository
+) -> AccountDTO:
     with repo:
         account: Account = repo.get_account(dto.number)
         response_data = AccountDTO(**account.__dict__)
@@ -38,3 +40,16 @@ def get_user(dto: queries.GetUser, repo: IClientRepository) -> ClientDTO:
         response_data = ClientDTO(user=user, accounts=accounts)
 
     return response_data
+
+
+def get_transaction_accounts(
+    dto: queries.GetTransactionAccounts, repo: IClientRepository
+) -> Tuple[AccountDTO, AccountDTO]:
+    with repo:
+        sender_acc = repo.get_account_by_number(dto.sender_acc_number)
+        receiver_acc = repo.get_account_by_number(dto.receiver_acc_number)
+
+        sender_acc_dto = AccountDTO(**sender_acc.__dict__)
+        receiver_acc_dto = AccountDTO(**receiver_acc.__dict__)
+
+    return sender_acc_dto, receiver_acc_dto
