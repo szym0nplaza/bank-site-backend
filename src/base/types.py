@@ -23,3 +23,7 @@ class Query:
 
 class AggregateRoot:
     """Base aggregate root class"""
+
+
+class Facade:
+    """Base class for facade - module for exposing data from given module to other"""

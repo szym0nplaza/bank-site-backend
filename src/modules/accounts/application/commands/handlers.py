@@ -1,8 +1,7 @@
 from modules.accounts.application.interfaces import IClientRepository
 from modules.accounts.domain.models import User, Account, Client
 from modules.accounts.domain.value_objects import Email, Password, Currency
-from modules.accounts.application import commands, queries
-from modules.accounts.application.dto import UserDTO, ClientDTO, AccountDTO
+from modules.accounts.application.commands import commands
 from typing import List
 
 
@@ -52,25 +51,6 @@ def delete_user(dto: commands.DeleteUser, repo: IClientRepository) -> None:
         repo.delete_user(dto.id)
 
 
-def get_user_list(_dto: queries.GetUserList, repo: IClientRepository) -> List[UserDTO]:
-    with repo:
-        db_data = repo.get_user_list()
-        response_data = [UserDTO(**record.__dict__) for record in db_data]
-
-    return response_data
-
-
-def get_user(dto: queries.GetUser, repo: IClientRepository) -> ClientDTO:
-    with repo:
-        client = repo.get_user(dto.id)
-        user, accounts = client.get_client_info()
-        user = UserDTO(**user.__dict__)
-        accounts = [AccountDTO(**acc.__dict__) for acc in accounts]
-        response_data = ClientDTO(user=user, accounts=accounts)
-
-    return response_data
-
-
 def change_currency(dto: commands.ChangeCurrency, repo: IClientRepository) -> None:
     with repo:
         account: Account = repo.get_account(dto.id)
@@ -80,19 +60,3 @@ def change_currency(dto: commands.ChangeCurrency, repo: IClientRepository) -> No
 def delete_account(dto: commands.DeleteAccount, repo: IClientRepository) -> None:
     with repo:
         repo.delete_account(dto.id)
-
-
-def get_account(dto: queries.GetAccount, repo: IClientRepository) -> AccountDTO:
-    with repo:
-        account: Account = repo.get_account(dto.id)
-        response_data = AccountDTO(**account.__dict__)
-
-    return response_data
-
-
-def get_account_by_number(dto: queries.GetAccountByNumber, repo: IClientRepository) -> AccountDTO:
-    with repo:
-        account: Account = repo.get_account(dto.number)
-        response_data = AccountDTO(**account.__dict__)
-
-    return response_data

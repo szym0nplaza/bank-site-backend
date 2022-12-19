@@ -20,3 +20,9 @@ class GetAccount(Query):
 @dataclass
 class GetAccountByNumber(Query):
     number: int
+
+
+@dataclass
+class GetTransactionAccounts(Query):
+    sender_acc_number: int
+    receiver_acc_number: int

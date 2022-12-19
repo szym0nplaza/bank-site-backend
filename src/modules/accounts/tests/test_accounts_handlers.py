@@ -2,7 +2,7 @@ from base.commands.command_handler import handle_command
 from base.queries.query_handler import handle_query
 from .helpers import MockClientRepository
 from modules.accounts.application.dto import ClientDTO, UserDTO
-from modules.accounts.application.commands import (
+from modules.accounts.application.commands.commands import (
     CreateUser,
     UpdateUser,
     DeleteUser,
@@ -10,7 +10,7 @@ from modules.accounts.application.commands import (
     ChangeCurrency,
     DeleteAccount
 )
-from modules.accounts.application.queries import GetUser, GetUserList, GetAccount
+from modules.accounts.application.queries.queries import GetUser, GetUserList, GetAccount
 from datetime import date
 
 

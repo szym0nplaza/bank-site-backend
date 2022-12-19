@@ -1,4 +1,4 @@
-from modules.accounts.application.commands import (
+from modules.accounts.application.commands.commands import (
     UpdateUser,
     CreateUser,
     ChangePassword,
@@ -7,7 +7,7 @@ from modules.accounts.application.commands import (
     ChangeCurrency,
     DeleteAccount,
 )
-from modules.accounts.application.handlers import (
+from modules.accounts.application.commands.handlers import (
     add_user,
     update_user,
     change_password,

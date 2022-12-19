@@ -1,10 +1,10 @@
-from modules.accounts.application.queries import (
+from modules.accounts.application.queries.queries import (
     GetUserList,
     GetUser,
     GetAccount,
     GetAccountByNumber,
 )
-from modules.accounts.application.handlers import (
+from modules.accounts.application.queries.handlers import (
     get_user_list,
     get_user,
     get_account,

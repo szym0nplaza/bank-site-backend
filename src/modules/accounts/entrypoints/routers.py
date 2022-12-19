@@ -1,13 +1,13 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from modules.accounts.application.commands import (
+from modules.accounts.application.commands.commands import (
     CreateUser,
     UpdateUser,
     ChangePassword,
     DeleteUser,
     CreateAccount
 )
-from modules.accounts.application.queries import GetUserList, GetUser
+from modules.accounts.application.queries.queries import GetUserList, GetUser
 from modules.accounts.application.dto import UserDTO, ClientDTO
 from base.commands.command_handler import handle_command
 from base.queries.query_handler import handle_query
