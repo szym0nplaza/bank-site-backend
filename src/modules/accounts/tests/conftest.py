@@ -1,6 +1,28 @@
+import pytest
 from modules.accounts.application.interfaces import IClientRepository
 from modules.accounts.domain.models import Client, Account, User
+from modules.accounts.application.dto import AccountDTO
+from modules.accounts.domain.value_objects import Currencies
 from typing import List, Union
+from decimal import Decimal
+
+
+@pytest.fixture
+def account_fixture():
+    return (
+        AccountDTO(
+            user_id=1,
+            default_currency=Currencies.EUR,
+            number=123456789012,
+            balance=Decimal("1000.00"),
+        ),
+        AccountDTO(
+            user_id=2,
+            default_currency=Currencies.EUR,
+            number=998765432109,
+            balance=Decimal("500.00"),
+        ),
+    )
 
 
 def id_generator():
@@ -48,7 +70,9 @@ class MockClientRepository(IClientRepository):
 
     def get_account_by_number(self, account_number: int) -> Union[Account, None]:
         try:
-            acc = list(filter(lambda x: x['number'] == account_number,self._accounts))[0]
+            acc = list(filter(lambda x: x["number"] == account_number, self._accounts))[
+                0
+            ]
         except IndexError:
             acc = None
         return acc

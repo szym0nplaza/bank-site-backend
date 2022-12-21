@@ -5,7 +5,7 @@ from modules.accounts.application.commands import commands
 from typing import List
 
 
-def add_user(dto: commands.CreateUser, repo: IClientRepository) -> None:
+def add_user(dto: commands.CreateUser, repo: IClientRepository, **_kwargs) -> None:
     with repo:
         user = User(
             name=dto.name,
@@ -21,7 +21,7 @@ def add_user(dto: commands.CreateUser, repo: IClientRepository) -> None:
         repo.create_user(client)
 
 
-def add_account(dto: commands.CreateAccount, repo: IClientRepository):
+def add_account(dto: commands.CreateAccount, repo: IClientRepository, **_kwargs):
     with repo:
         account = Account(
             user_id=dto.user_id, default_currency=Currency(dto.default_currency)
@@ -29,7 +29,7 @@ def add_account(dto: commands.CreateAccount, repo: IClientRepository):
         repo.create_account(account)
 
 
-def update_user(dto: commands.UpdateUser, repo: IClientRepository) -> None:
+def update_user(dto: commands.UpdateUser, repo: IClientRepository, **_kwargs) -> None:
     with repo:
         user: User = repo.get_user(dto.id).user
         user.update_data(dto)
@@ -46,17 +46,17 @@ def change_password(dto: commands.ChangePassword, repo: IClientRepository) -> No
         user.change_password(Password(dto.new_password))
 
 
-def delete_user(dto: commands.DeleteUser, repo: IClientRepository) -> None:
+def delete_user(dto: commands.DeleteUser, repo: IClientRepository, **_kwargs) -> None:
     with repo:
         repo.delete_user(dto.id)
 
 
-def change_currency(dto: commands.ChangeCurrency, repo: IClientRepository) -> None:
+def change_currency(dto: commands.ChangeCurrency, repo: IClientRepository, **_kwargs) -> None:
     with repo:
         account: Account = repo.get_account(dto.id)
         account.change_currency(Currency(dto.currency))
 
 
-def delete_account(dto: commands.DeleteAccount, repo: IClientRepository) -> None:
+def delete_account(dto: commands.DeleteAccount, repo: IClientRepository, **_kwargs) -> None:
     with repo:
         repo.delete_account(dto.id)

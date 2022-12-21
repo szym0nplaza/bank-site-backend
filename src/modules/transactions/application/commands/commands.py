@@ -4,7 +4,7 @@ from decimal import Decimal
 
 
 @dataclass
-class AddTransaction(Command):
-    sender_account: int
-    receiver_account: int
+class RegisterTransaction(Command):
+    sender_account_number: int
+    receiver_account_number: int
     amount: Decimal
