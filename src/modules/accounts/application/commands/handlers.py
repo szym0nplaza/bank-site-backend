@@ -16,7 +16,12 @@ def add_user(dto: commands.CreateUser, repo: IClientRepository, **_kwargs) -> No
             password=Password(dto.password),
         )
 
-        account = Account(default_currency=Currency("PLN"))
+        while True:
+            # Temporary solution for generating unique acc numbers
+            account = Account(default_currency=Currency("PLN"))
+            if not repo.get_account_by_number(account.number):
+                break
+
         client = Client(user, [account])
         repo.create_user(client)
 
