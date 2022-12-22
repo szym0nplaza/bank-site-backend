@@ -11,3 +11,8 @@ class TransactionRepository(ITransactionRepository):
 
     def create_transaction(self, transaction: Transaction) -> None:
         self.es_client.index(transaction.__dict__, self.TRANSACTION_INDEX)
+
+    def get_account_transactions(self, account_number: int) -> list:
+        return self.es_client.search(
+            {"sender_account": account_number}, self.TRANSACTION_INDEX
+        )
