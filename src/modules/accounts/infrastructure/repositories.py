@@ -15,7 +15,7 @@ class ClientRepository(IClientRepository):
         try:
             self._session.commit()
         except:
-            self._session.rollback()
+            self._session.close()
         finally:
             self._session.rollback()
     

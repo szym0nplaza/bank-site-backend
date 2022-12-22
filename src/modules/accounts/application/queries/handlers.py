@@ -49,6 +49,11 @@ def get_transaction_accounts(
         sender_acc = repo.get_account_by_number(dto.sender_acc_number)
         receiver_acc = repo.get_account_by_number(dto.receiver_acc_number)
 
+        if not sender_acc:
+            raise LookupError("Sender account with given number not found!")
+        if not receiver_acc:
+            raise LookupError("Receiver account with given number not found!")
+
         sender_acc_dto = AccountDTO(**sender_acc.__dict__)
         receiver_acc_dto = AccountDTO(**receiver_acc.__dict__)
 
