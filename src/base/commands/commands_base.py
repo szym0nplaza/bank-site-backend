@@ -37,6 +37,7 @@ USER_COMMAND_HANDLERS = {
     },
 }
 
+### TRANSACTIONS MODULE COMMANDS
 TRANSACTION_COMMAND_HANDLERS = {
     transaction_commands.RegisterTransaction: {
         "handler": transaction_handlers.add_transaction,

@@ -5,7 +5,9 @@ from modules.accounts.application.dto import UserDTO, ClientDTO, AccountDTO
 from typing import List, Tuple
 
 
-def get_account(dto: queries.GetAccount, repo: IClientRepository) -> AccountDTO:
+def get_account(
+    dto: queries.GetAccount, repo: IClientRepository, **_kwargs
+) -> AccountDTO:
     with repo:
         account: Account = repo.get_account(dto.id)
         response_data = AccountDTO(**account.__dict__)
@@ -14,7 +16,7 @@ def get_account(dto: queries.GetAccount, repo: IClientRepository) -> AccountDTO:
 
 
 def get_account_by_number(
-    dto: queries.GetAccountByNumber, repo: IClientRepository
+    dto: queries.GetAccountByNumber, repo: IClientRepository, **_kwargs
 ) -> AccountDTO:
     with repo:
         account: Account = repo.get_account(dto.number)
@@ -23,7 +25,9 @@ def get_account_by_number(
     return response_data
 
 
-def get_user_list(_dto: queries.GetUserList, repo: IClientRepository) -> List[UserDTO]:
+def get_user_list(
+    _dto: queries.GetUserList, repo: IClientRepository, **_kwargs
+) -> List[UserDTO]:
     with repo:
         db_data = repo.get_user_list()
         response_data = [UserDTO(**record.__dict__) for record in db_data]
@@ -31,7 +35,7 @@ def get_user_list(_dto: queries.GetUserList, repo: IClientRepository) -> List[Us
     return response_data
 
 
-def get_user(dto: queries.GetUser, repo: IClientRepository) -> ClientDTO:
+def get_user(dto: queries.GetUser, repo: IClientRepository, **_kwargs) -> ClientDTO:
     with repo:
         client = repo.get_user(dto.id)
         user, accounts = client.get_client_info()
@@ -43,7 +47,7 @@ def get_user(dto: queries.GetUser, repo: IClientRepository) -> ClientDTO:
 
 
 def get_transaction_accounts(
-    dto: queries.GetTransactionAccounts, repo: IClientRepository
+    dto: queries.GetTransactionAccounts, repo: IClientRepository, **_kwargs
 ) -> Tuple[AccountDTO, AccountDTO]:
     with repo:
         sender_acc = repo.get_account_by_number(dto.sender_acc_number)

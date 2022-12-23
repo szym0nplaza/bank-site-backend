@@ -27,6 +27,14 @@ class TransactionsMockRepo(ITransactionRepository):
     def create_transaction(self, transaction: Transaction) -> None:
         self.transactions.append(transaction)
 
+    def get_account_transactions(self, account_number: int) -> list:
+        transactions = list(
+            filter(
+                lambda x: x.sender_account == account_number, self.transactions
+            )
+        )
+        return transactions
+
 
 class AccountsMockAdapter(AccountsPort):
     def get_transaction_accounts(

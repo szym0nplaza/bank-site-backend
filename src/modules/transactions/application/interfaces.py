@@ -9,6 +9,6 @@ class ITransactionRepository(ABC, Repository):
         raise NotImplementedError
 
     @abstractmethod
-    def get_account_transactions(self, account_number: int) -> None:
+    def get_account_transactions(self, account_number: int) -> list:
         """Searches transaction for given account by `sender_account`"""
         raise NotImplementedError
