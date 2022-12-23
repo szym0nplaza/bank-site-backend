@@ -2,7 +2,7 @@ from modules.accounts.application.interfaces import IClientRepository
 from modules.accounts.domain.models import User, Account, Client
 from modules.accounts.domain.value_objects import Email, Password, Currency
 from modules.accounts.application.commands import commands
-from typing import List
+from decimal import Decimal
 
 
 def add_user(dto: commands.CreateUser, repo: IClientRepository, **_kwargs) -> None:
@@ -65,3 +65,9 @@ def change_currency(dto: commands.ChangeCurrency, repo: IClientRepository, **_kw
 def delete_account(dto: commands.DeleteAccount, repo: IClientRepository, **_kwargs) -> None:
     with repo:
         repo.delete_account(dto.id)
+
+
+def update_account_balance(dto: commands.UpdateBalance, repo: IClientRepository, **_kwargs) -> None:
+    with repo:
+        account: Account = repo.get_account_by_number(dto.account_number)
+        account.update_balance(Decimal(account.balance)+dto.amount)

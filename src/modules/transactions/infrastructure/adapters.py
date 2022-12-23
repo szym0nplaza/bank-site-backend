@@ -2,6 +2,7 @@ from modules.transactions.application.ports import AccountsPort
 from modules.accounts.infrastructure.facade import AccountsFacade
 from modules.transactions.application.dto import TransactionAccountDTO
 from typing import Tuple
+from decimal import Decimal
 
 
 class AccountsAdapter(AccountsPort):
@@ -26,3 +27,6 @@ class AccountsAdapter(AccountsPort):
         )
 
         return sender_acc, receiver_acc
+
+    def update_accounts_balances(self, sender_account_number: int, receiver_account_number: int, amount: Decimal) -> None:
+        self.facade.update_accounts_balances(sender_account_number, receiver_account_number, amount)

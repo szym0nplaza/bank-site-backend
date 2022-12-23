@@ -1,4 +1,4 @@
-from .conftest import AccountsMockAdapter, TransactionsMockRepo
+from .conftest import AccountsMockAdapter, TransactionsMockRepo, Accounts
 from base.commands.command_handler import handle_command
 from base.queries.query_handler import handle_query
 from modules.transactions.application.commands import commands
@@ -28,6 +28,8 @@ class TestTransactions:
         assert transaction.receiver_account == 998765432109
         assert transaction.receiver_post_balance == Decimal("900.00")
         assert transaction.sender_post_balance == Decimal("600.00")
+        assert Accounts.sender_acc.balance == Decimal("600.00")
+        assert Accounts.receiver_acc.balance == Decimal("900.00")
 
     def test_no_funds(self):
         try:

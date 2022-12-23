@@ -1,5 +1,6 @@
 from base.types import Command
 from dataclasses import dataclass
+from decimal import Decimal
 
 
 @dataclass
@@ -49,3 +50,9 @@ class ChangePassword(Command):
 @dataclass
 class DeleteUser(Command):
     id: int
+
+
+@dataclass
+class UpdateBalance(Command):
+    account_number: int
+    amount: Decimal

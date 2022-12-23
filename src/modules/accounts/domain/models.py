@@ -20,7 +20,7 @@ class Account(Entity):
     user_id: Optional[int] = None
     id: Optional[int] = None
     number: Optional[AccountNumber] = None
-    balance: Optional[Decimal] = None
+    balance: Optional[Decimal] = Decimal('0.00')
 
     def update_balance(self, new_balance: Decimal) -> None:
         self.balance = new_balance
@@ -31,7 +31,6 @@ class Account(Entity):
     def __post_init__(self):
         acc_number = random.randint(10**11, 10**12)
         self.number = AccountNumber(acc_number)
-        self.balance = Decimal('0.00')
 
         self.default_currency = self.default_currency.value
         self.number = self.number.value

@@ -35,6 +35,10 @@ USER_COMMAND_HANDLERS = {
         "handler": user_handlers.delete_account,
         "response_code": 200,
     },
+    user_commands.UpdateBalance: {
+        "handler": user_handlers.update_account_balance,
+        "response_code": 200,
+    },
 }
 
 ### TRANSACTIONS MODULE COMMANDS
