@@ -15,7 +15,7 @@ class IClientRepository(ABC, Repository):
     ```
     """
 
-    def __enter__(self, session) -> None:
+    def __enter__(self) -> None:
         pass
 
     def __exit__(self, *__args) -> None:

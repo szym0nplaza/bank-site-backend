@@ -40,10 +40,10 @@ class Account(Entity):
 class User(Entity):
     login: str
     email: Union[Email, str]
-    name: Optional[str] = None
-    surname: Optional[str] = None
-    date_of_birth: Optional[date] = None
-    password: Optional[Union[Password, str]] = None
+    name: str
+    surname: str
+    date_of_birth: date
+    password: Union[Password, str]
     id: Optional[int] = None
 
     def update_data(self, dto):
