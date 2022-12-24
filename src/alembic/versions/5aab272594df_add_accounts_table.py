@@ -21,8 +21,8 @@ def upgrade() -> None:
         'accounts',
         sa.Column('id', sa.Integer, primary_key=True, nullable=False, autoincrement=True),
         sa.Column('default_currency', sa.String(3), nullable=False),
-        sa.Column('number', sa.String(12), nullable=False),
-        sa.Column('balance', sa.Float(precision=2), nullable=False),
+        sa.Column('number', sa.String(12), nullable=False, unique=True),
+        sa.Column('balance', sa.DECIMAL(precision=15,scale=2), nullable=False),
         sa.Column('user_id', sa.Integer, nullable=False),
         sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete="CASCADE"),
     )
