@@ -2,6 +2,8 @@ from config.settings import settings
 from base.types import Command, Repository
 from base.dto import ResponseDTO
 from .commands_base import COMMAND_HANDLERS
+from config.logger import logger
+
 
 
 # Base handler for commands from all modules
@@ -19,4 +21,5 @@ def handle_command(command: Command, repo: Repository, **kwargs) -> ResponseDTO:
     except Exception as e:
         if settings.debug:
             raise e
+        logger.error(e)
         return ResponseDTO(message=str(e), status=500)

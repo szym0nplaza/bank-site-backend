@@ -2,6 +2,7 @@ from base.types import Query, Repository
 from base.dto import ResponseDTO
 from config.settings import settings
 from .queries_base import QUERY_HANDLERS
+from config.logger import logger
 
 
 # Base handler for queries from all modules
@@ -14,4 +15,5 @@ def handle_query(query: Query, repo: Repository, **kwargs) -> ResponseDTO:
     except Exception as e:
         if settings.debug:
             raise e
+        logger.error(e)
         return ResponseDTO(message=str(e), status=500)
