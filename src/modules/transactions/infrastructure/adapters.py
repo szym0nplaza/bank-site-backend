@@ -29,4 +29,5 @@ class AccountsAdapter(AccountsPort):
         return sender_acc, receiver_acc
 
     def update_accounts_balances(self, sender_account_number: int, receiver_account_number: int, amount: Decimal) -> None:
-        self.facade.update_accounts_balances(sender_account_number, receiver_account_number, amount)
+        self.facade.update_account_balance(sender_account_number, -amount)
+        self.facade.update_account_balance(receiver_account_number, amount)

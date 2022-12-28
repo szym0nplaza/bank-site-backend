@@ -10,14 +10,14 @@ from dateutil.relativedelta import relativedelta
 @dataclass
 class Loan(Entity):
     user_id: int
-    account_id: int
+    account_number: int
     borrowed_amount: Decimal
     no_installments: int  # number of installments
-    currency: str
     paid_installments: int = 0
     billing_month_day: int = 10
     paid_amount: Decimal = Decimal("0.00")
     status: LoanStatus = LoanStatus.ACTIVE
+    currency: Optional[str] = None
     id: Optional[int] = None
 
     def get_next_installment(self) -> Decimal:

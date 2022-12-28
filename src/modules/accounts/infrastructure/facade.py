@@ -25,6 +25,5 @@ class AccountsFacade(Facade):
         result = handle_query(dto, self.repo)
         return result
 
-    def update_accounts_balances(self, sender_acc_number: int, receiver_acc_number: int, amount: Decimal):
-        handle_command(commands.UpdateBalance(account_number=sender_acc_number, amount=-amount), self.repo)
-        handle_command(commands.UpdateBalance(account_number=receiver_acc_number, amount=amount), self.repo)
+    def update_account_balance(self, acc_number: int, amount: Decimal):
+        handle_command(commands.UpdateBalance(account_number=acc_number, amount=amount), self.repo)
