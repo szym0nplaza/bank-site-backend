@@ -1,9 +1,8 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 from decimal import Decimal
 
 
-@dataclass
-class TransactionAccountDTO:
+class TransactionAccountDTO(BaseModel):
     currency: str
     number: int
     balance: Decimal
