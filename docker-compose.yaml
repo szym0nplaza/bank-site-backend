@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: 'db'
+    environment: 
+        - POSTGRES_DB=bankapp
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=qwerty
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python src/main.py
+    depends_on:
+      - db
+    environment:
+      PYTHONPATH: .src
+    volumes:
+      - .:/src
+    ports:
+      - "8000:8000"

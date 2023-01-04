@@ -10,6 +10,7 @@ from .logger import logger
 
 class Settings(BaseSettings):
     debug: bool = bool(Field(env="DEBUG"))
+    application_host = str(Field(env="APPLICATION_HOST"))
     password_key: str = Field(env="PASSWORD_ENCRYPTION_KEY")
     db_name: str = Field(env="DB_NAME")
     db_user: str = Field(env="DB_USER")
