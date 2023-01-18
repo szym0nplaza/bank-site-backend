@@ -1,0 +1,47 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Banking App
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  PASSWORD_ENCRYPTION_KEY: ${{ secrets.PASSWORD_ENCRYPTION_KEY }}
+  DEBUG: "1"
+  DB_NAME: test
+  DB_USER: test
+  DB_PASSWORD: test
+  DB_HOST: db
+  ELASTICSEARCH_HOST: localhost
+  RABBITMQ_HOST: localhost
+  APPLICATION_HOST: localhost
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+    - name: Show Variable
+      run: |
+        echo ${{ secrets.PASSWORD_ENCRYPTION_KEY }};
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        if [ -f requirements/base.txt ]; then pip install -r requirements/base.txt; fi
+    - name: Test with pytest
+      run: |
+        pytest
