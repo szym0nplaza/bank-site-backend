@@ -9,21 +9,6 @@ services:
         - POSTGRES_USER=root
         - POSTGRES_PASSWORD=qwerty
 
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: python src/main.py
-    depends_on:
-      - db
-      - elasticsearch
-    environment:
-      PYTHONPATH: .src
-    volumes:
-      - .:/src
-    ports:
-      - "8000:8000"
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.5.2
     container_name: elasticsearch
@@ -41,3 +26,16 @@ services:
       - IPC_LOCK
     volumes:
       - ./elasticsearch:/usr/share/elasticsearch/data
+
+  web:
+    build: .
+    command: python src/main.py
+    depends_on:
+      - db
+      - elasticsearch
+    environment:
+      PYTHONPATH: .src
+    volumes:
+      - .:/src
+    ports:
+      - "8000:8000"
