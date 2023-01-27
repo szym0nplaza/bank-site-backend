@@ -1,11 +1,13 @@
 ### COMMANDS
 from modules.accounts.application.commands import commands as user_commands
 from modules.transactions.application.commands import commands as transaction_commands
+from modules.loans.application.commands import commands as loan_commands
 
 
 ### HANDLERS
 from modules.accounts.application.commands import handlers as user_handlers
 from modules.transactions.application.commands import handlers as transaction_handlers
+from modules.loans.application.commands import handlers as loan_handlers
 
 
 ### ACCOUNTS/USER MODULE COMMANDS
@@ -49,8 +51,17 @@ TRANSACTION_COMMAND_HANDLERS = {
     }
 }
 
+###
+LOAN_COMMAND_HANDLERS = {
+    loan_commands.RegisterLoan: {
+    "handler": loan_handlers.add_loan,
+    "response_code": 201,
+    }
+}
+
 
 COMMAND_HANDLERS = {
     **USER_COMMAND_HANDLERS,
     **TRANSACTION_COMMAND_HANDLERS,
+    **LOAN_COMMAND_HANDLERS
 }  # Will join all handlers in one

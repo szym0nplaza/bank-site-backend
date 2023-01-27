@@ -1,11 +1,13 @@
 ### QUERIES
 import modules.accounts.application.queries.queries as user_queries
-import modules.accounts.application.queries.handlers as user_handlers
+import modules.transactions.application.queries.queries as transaction_queries
+import modules.loans.application.queries.queries as loan_queries
 
 
 ### HANDLERS
 import modules.transactions.application.queries.handlers as transaction_handlers
-import modules.transactions.application.queries.queries as transaction_queries
+import modules.accounts.application.queries.handlers as user_handlers
+import modules.loans.application.queries.handlers as loan_handlers
 
 
 ### ACCOUNTS/USER MODULE QUERIES
@@ -26,5 +28,12 @@ TRANSACTION_QUERY_HANDLERS = {
     }
 }
 
+### LOAN MODULE QUERIES
+LOAN_QUERY_HANDLERS = {loan_queries.GetLoans: {"handler": loan_handlers.get_user_loans}}
 
-QUERY_HANDLERS = {**USER_QUERY_HANDLERS, **TRANSACTION_QUERY_HANDLERS}  # Will join all handlers in one
+
+QUERY_HANDLERS = {
+    **USER_QUERY_HANDLERS,
+    **TRANSACTION_QUERY_HANDLERS,
+    **LOAN_QUERY_HANDLERS,
+}  # Will join all handlers in one
